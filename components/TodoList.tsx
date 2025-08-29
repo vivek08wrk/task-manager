@@ -6,6 +6,7 @@ import { Task, getTasks, saveTasks, addTask, updateTask, deleteTask } from '@/li
 import { TaskCard } from './TaskCard'
 import { TaskEditor } from './TaskEditor'
 import { SearchBar } from './SearchBar'
+import { AnimatedContainer, GlowCard, fadeInVariants, slideUpVariants, staggerVariants } from './AnimationComponents'
 
 export function TodoList() {
   const [tasks, setTasks] = useState<Task[]>([])
@@ -96,93 +97,119 @@ export function TodoList() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <AnimatedContainer className="flex items-center justify-center min-h-[400px]">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          className="w-12 h-12 border-2 border-nothing-orange border-t-transparent rounded-full"
+          className="w-12 h-12 border-2 border-cmf-orange border-t-transparent rounded-full"
         />
-      </div>
+      </AnimatedContainer>
     )
   }
 
   return (
-  <div className="space-y-6">
+    <AnimatedContainer variants={staggerVariants} className="space-y-6 sm:space-y-8">
       {/* Header */}
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center"
+        variants={fadeInVariants}
+        className="text-center space-y-3"
       >
-        <h1 className="text-3xl sm:text-4xl font-bold gradient-text mb-2">Task Manager</h1>
-        <p className="text-gray-400">Organize your creative workflow</p>
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold gradient-text">Task Manager</h1>
+        <p className="text-gray-400 text-lg">Organize your creative workflow with CMF elegance</p>
       </motion.div>
 
-      {/* Stats */}
+      {/* Stats Grid */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-  className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4"
+        variants={fadeInVariants}
+        className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
       >
-        <div className="glass-card p-4 text-center">
-          <div className="text-2xl font-bold text-white">{stats.total}</div>
-          <div className="text-sm text-gray-400">Total</div>
-        </div>
-        <div className="glass-card p-4 text-center">
-          <div className="text-2xl font-bold text-nothing-orange">{stats.pending}</div>
-          <div className="text-sm text-gray-400">Pending</div>
-        </div>
-        <div className="glass-card p-4 text-center">
-          <div className="text-2xl font-bold text-nothing-green">{stats.completed}</div>
-          <div className="text-sm text-gray-400">Completed</div>
-        </div>
-        <div className="glass-card p-4 text-center">
-          <div className="text-2xl font-bold text-red-400">{stats.overdue}</div>
-          <div className="text-sm text-gray-400">Overdue</div>
-        </div>
+        <GlowCard className="p-4 sm:p-6 text-center group hover:scale-105 transition-transform">
+          <div className="text-2xl sm:text-3xl font-bold text-white group-hover:text-cmf-orange transition-colors">
+            {stats.total}
+          </div>
+          <div className="text-sm text-gray-400 mt-1">Total Tasks</div>
+        </GlowCard>
+        
+        <GlowCard className="p-4 sm:p-6 text-center group hover:scale-105 transition-transform">
+          <div className="text-2xl sm:text-3xl font-bold text-cmf-orange group-hover:scale-110 transition-transform">
+            {stats.pending}
+          </div>
+          <div className="text-sm text-gray-400 mt-1">Pending</div>
+        </GlowCard>
+        
+        <GlowCard className="p-4 sm:p-6 text-center group hover:scale-105 transition-transform">
+          <div className="text-2xl sm:text-3xl font-bold text-cmf-green group-hover:scale-110 transition-transform">
+            {stats.completed}
+          </div>
+          <div className="text-sm text-gray-400 mt-1">Completed</div>
+        </GlowCard>
+        
+        <GlowCard className="p-4 sm:p-6 text-center group hover:scale-105 transition-transform">
+          <div className="text-2xl sm:text-3xl font-bold text-red-400 group-hover:scale-110 transition-transform">
+            {stats.overdue}
+          </div>
+          <div className="text-sm text-gray-400 mt-1">Overdue</div>
+        </GlowCard>
       </motion.div>
 
       {/* Controls */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-  className="flex flex-col md:flex-row gap-3 sm:gap-4 items-center justify-between"
+        variants={slideUpVariants}
+        className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between"
       >
-        <SearchBar onSearch={handleSearch} />
+        <div className="flex-1 max-w-md">
+          <SearchBar onSearch={handleSearch} />
+        </div>
         
-        <div className="flex gap-2">
-          {/* Filter buttons */}
-          <select
+        <div className="flex flex-wrap gap-2 sm:gap-3">
+          {/* Filter Dropdown */}
+          <motion.select
+            whileHover={{ scale: 1.02 }}
+            whileFocus={{ scale: 1.02 }}
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value as any)}
-            className="input-glass px-3 py-2 text-sm"
+            className="glass px-4 py-3 text-sm bg-white/5 border border-white/10 rounded-2xl 
+                      focus:border-cmf-orange/50 focus:ring-2 focus:ring-cmf-orange/20 
+                      text-white backdrop-blur-xl transition-all duration-300"
           >
-            <option value="all">All Tasks</option>
-            <option value="pending">Pending</option>
-            <option value="completed">Completed</option>
-          </select>
+            <option value="all" className="bg-cmf-black text-white">All Tasks</option>
+            <option value="pending" className="bg-cmf-black text-white">Pending</option>
+            <option value="completed" className="bg-cmf-black text-white">Completed</option>
+          </motion.select>
 
-          {/* Sort buttons */}
-          <select
+          {/* Sort Dropdown */}
+          <motion.select
+            whileHover={{ scale: 1.02 }}
+            whileFocus={{ scale: 1.02 }}
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
-            className="input-glass px-3 py-2 text-sm"
+            className="glass px-4 py-3 text-sm bg-white/5 border border-white/10 rounded-2xl 
+                      focus:border-cmf-orange/50 focus:ring-2 focus:ring-cmf-orange/20 
+                      text-white backdrop-blur-xl transition-all duration-300"
           >
-            <option value="dueDate">Due Date</option>
-            <option value="status">Status</option>
-            <option value="created">Created</option>
-          </select>
+            <option value="dueDate" className="bg-cmf-black text-white">Due Date</option>
+            <option value="status" className="bg-cmf-black text-white">Status</option>
+            <option value="created" className="bg-cmf-black text-white">Created</option>
+          </motion.select>
 
-          {/* Create button */}
+          {/* Create Button */}
           <motion.button
             onClick={() => setIsCreating(true)}
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.05, y: -1 }}
             whileTap={{ scale: 0.95 }}
-            className="btn-primary whitespace-nowrap"
+            className="relative px-6 py-3 bg-gradient-to-r from-cmf-orange to-cmf-green 
+                      text-white font-medium rounded-2xl shadow-glow-orange 
+                      hover:shadow-neon-orange transition-all duration-300 
+                      whitespace-nowrap overflow-hidden group"
           >
-            + New Task
+            {/* Shimmer Effect */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 animate-shimmer" />
+            </div>
+            <span className="relative flex items-center gap-2">
+              <span className="text-lg">✨</span>
+              New Task
+            </span>
           </motion.button>
         </div>
       </motion.div>
@@ -198,50 +225,73 @@ export function TodoList() {
       </AnimatePresence>
 
       {/* Tasks List */}
-      <div className="space-y-4">
+      <motion.div variants={fadeInVariants} className="space-y-4">
         <AnimatePresence mode="popLayout">
           {filteredTasks.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="glass-card p-12 text-center"
-            >
-              <div className="text-6xl mb-4">🎨</div>
-              <h3 className="text-xl font-semibold text-white mb-2">
-                {searchQuery || filterStatus !== 'all' 
-                  ? 'No tasks found' 
-                  : 'Ready to create?'}
-              </h3>
-              <p className="text-gray-400 max-w-md mx-auto">
-                {searchQuery || filterStatus !== 'all'
-                  ? 'Try adjusting your search or filter criteria.'
-                  : 'Start organizing your creative projects by adding your first task.'}
-              </p>
-              {!searchQuery && filterStatus === 'all' && (
-                <motion.button
-                  onClick={() => setIsCreating(true)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn-primary mt-6"
-                >
-                  Create Your First Task
-                </motion.button>
-              )}
-            </motion.div>
+            <GlowCard className="p-8 sm:p-12 text-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.6 }}
+                className="space-y-6"
+              >
+                <div className="text-6xl sm:text-8xl mb-4 animate-float">🎨</div>
+                <h3 className="text-xl sm:text-2xl font-semibold text-white mb-2">
+                  {searchQuery || filterStatus !== 'all' 
+                    ? 'No tasks found' 
+                    : 'Ready to create?'}
+                </h3>
+                <p className="text-gray-400 max-w-md mx-auto text-sm sm:text-base">
+                  {searchQuery || filterStatus !== 'all'
+                    ? 'Try adjusting your search or filter criteria.'
+                    : 'Start organizing your creative projects by adding your first task.'}
+                </p>
+                {!searchQuery && filterStatus === 'all' && (
+                  <motion.button
+                    onClick={() => setIsCreating(true)}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="relative px-8 py-4 bg-gradient-to-r from-cmf-orange to-cmf-green 
+                              text-white font-medium rounded-2xl shadow-glow-orange 
+                              hover:shadow-neon-orange transition-all duration-300 
+                              mt-6 overflow-hidden group"
+                  >
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 animate-shimmer" />
+                    </div>
+                    <span className="relative flex items-center gap-2">
+                      <span className="text-xl">✨</span>
+                      Create Your First Task
+                    </span>
+                  </motion.button>
+                )}
+              </motion.div>
+            </GlowCard>
           ) : (
-      filteredTasks.map((task) => (
-              <TaskCard
-                key={task.id}
-                task={task}
-                onEdit={handleUpdateTask}
-                onDelete={handleDeleteTask}
-        justAdded={task.id === lastAddedId}
-              />
-            ))
+            <motion.div 
+              variants={staggerVariants}
+              className="grid gap-4 sm:gap-6"
+            >
+              {filteredTasks.map((task, index) => (
+                <motion.div
+                  key={task.id}
+                  variants={slideUpVariants}
+                  custom={index}
+                  layout
+                >
+                  <TaskCard
+                    task={task}
+                    onEdit={handleUpdateTask}
+                    onDelete={handleDeleteTask}
+                    justAdded={task.id === lastAddedId}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
           )}
         </AnimatePresence>
-      </div>
-    </div>
+      </motion.div>
+    </AnimatedContainer>
   )
 }
