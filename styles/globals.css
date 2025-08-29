@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 222 84% 5%;
+  --foreground: 210 40% 98%;
+  --card: 222 84% 5%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222 84% 5%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 222 84% 5%;
+  --secondary: 217 32% 17%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217 32% 17%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 217 32% 17%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217 32% 17%;
+  --input: 217 32% 17%;
+  --ring: 217 91% 60%;
+  --radius: 0.75rem;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  color: hsl(var(--foreground));
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  font-family: "SF Pro Display", system-ui, sans-serif;
+  font-feature-settings: "cv11", "ss01";
+  font-variation-settings: "opsz" 32;
+  min-height: 100vh;
+}
+
+/* Glass morphism utility classes */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.glass-card {
+  @apply glass rounded-2xl;
+}
+
+/* Nothing-inspired glow effects */
+.glow-orange {
+  box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+  border: 1px solid rgba(255, 107, 53, 0.2);
+}
+
+.glow-green {
+  box-shadow: 0 0 20px rgba(0, 255, 133, 0.3);
+  border: 1px solid rgba(0, 255, 133, 0.2);
+}
+
+.glow-orange:hover {
+  box-shadow: 0 0 30px rgba(255, 107, 53, 0.5);
+  border: 1px solid rgba(255, 107, 53, 0.4);
+  transition: all 0.3s ease;
+}
+
+.glow-green:hover {
+  box-shadow: 0 0 30px rgba(0, 255, 133, 0.5);
+  border: 1px solid rgba(0, 255, 133, 0.4);
+  transition: all 0.3s ease;
+}
+
+/* Interactive button styles */
+.btn-primary {
+  @apply glass-card px-6 py-3 text-nothing-orange font-medium transition-all duration-300;
+  @apply hover:glow-orange focus:glow-orange;
+}
+
+.btn-secondary {
+  @apply glass-card px-6 py-3 text-nothing-green font-medium transition-all duration-300;
+  @apply hover:glow-green focus:glow-green;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 107, 53, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 107, 53, 0.5);
+}
+
+/* Input styles */
+.input-glass {
+  @apply glass-card px-4 py-3 text-foreground placeholder:text-muted-foreground;
+  @apply focus:outline-none focus:ring-2 focus:ring-nothing-orange/50;
+  @apply transition-all duration-300;
+}
+
+/* Card hover effects */
+.card-interactive {
+  @apply glass-card transition-all duration-300 cursor-pointer;
+  @apply hover:scale-[1.02] hover:shadow-glow-orange;
+}
+
+/* Nothing phone inspired dot matrix background */
+.dot-matrix {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 107, 53, 0.1) 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+/* Artistic gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #FF6B35 0%, #00FF85 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Loading animation */
+.pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(255, 107, 53, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+  }
+}
+
+/* Mobile optimizations for Nothing Phone 1 */
+@media (max-width: 430px) {
+  .glass-card {
+    @apply rounded-xl;
+  }
+  
+  .btn-primary, .btn-secondary {
+    @apply px-4 py-2 text-sm;
+  }
+}
